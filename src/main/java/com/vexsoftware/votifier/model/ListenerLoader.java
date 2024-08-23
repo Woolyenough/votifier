@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.*;
 import java.util.*;
 import java.util.logging.*;
-import com.vexsoftware.votifier.Votifier;
 
 /**
  * Loads vote listeners. Listeners that cannot be instantiated will be skipped.
@@ -23,7 +22,7 @@ public class ListenerLoader {
 	 *            The directory
 	 */
 	public static List<VoteListener> load(String directory) /* throws Exception */{
-		List<VoteListener> listeners = new ArrayList<VoteListener>();
+		List<VoteListener> listeners = new ArrayList<>();
 		File dir = new File(directory);
 
 		// Verify configured vote listener directory exists
@@ -53,13 +52,12 @@ public class ListenerLoader {
 
 			try {
 				Class<?> clazz = loader.loadClass(name);
-				Object object = clazz.newInstance();
-				if (!(object instanceof VoteListener)) {
+				Object object = clazz.getDeclaredConstructor().newInstance();
+				if (!(object instanceof VoteListener listener)) {
 					LOG.info("Not a vote listener: " + clazz.getSimpleName());
 					continue;
 				}
-				VoteListener listener = (VoteListener) object;
-				listeners.add(listener);
+                listeners.add(listener);
 				LOG.info("Loaded vote listener: "
 						+ listener.getClass().getSimpleName());
 			}
@@ -67,14 +65,11 @@ public class ListenerLoader {
 			 * Catch the usual definition and dependency problems with a loader
 			 * and skip the problem listener.
 			 */
-			catch (Exception ex) {
-				LOG.log(Level.WARNING, "Error loading '" + name
-						+ "' listener! Listener disabled.");
-			} catch (Error ex) {
+			catch (Exception | Error ex) {
 				LOG.log(Level.WARNING, "Error loading '" + name
 						+ "' listener! Listener disabled.");
 			}
-		}
+        }
 		return listeners;
 	}
 }

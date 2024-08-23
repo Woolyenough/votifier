@@ -72,10 +72,10 @@ public class VoteReceiver extends Thread {
 		this.host = host;
 		this.port = port;
 
-		initialize();
+		initialise();
 	}
 
-	private void initialize() throws Exception {
+	private void initialise() throws Exception {
 		try {
 			server = new ServerSocket();
 			server.bind(new InetSocketAddress(host, port));
@@ -118,7 +118,7 @@ public class VoteReceiver extends Thread {
 				InputStream in = socket.getInputStream();
 
 				// Send them our version.
-				writer.write("VOTIFIER " + Votifier.getInstance().getVersion());
+				writer.write("VOTIFIER " + Votifier.getInstance().getPluginMeta().getVersion());
 				writer.newLine();
 				writer.flush();
 
@@ -176,12 +176,8 @@ public class VoteReceiver extends Thread {
 				// custom event runs in the
 				// the main server thread, not this one.
 				plugin.getServer().getScheduler()
-						.scheduleSyncDelayedTask(plugin, new Runnable() {
-							public void run() {
-								Bukkit.getServer().getPluginManager()
-										.callEvent(new VotifierEvent(vote));
-							}
-						});
+						.scheduleSyncDelayedTask(plugin, () -> Bukkit.getServer().getPluginManager()
+                                .callEvent(new VotifierEvent(vote)));
 
 				// Clean up.
 				writer.close();

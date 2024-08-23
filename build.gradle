@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'xyz.jpenilla.run-paper' version '2.3.0'
+}
+
+group = 'com.vexsoftware.votifier'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    implementation("javax.xml.bind:jaxb-api:2.2.4")
+}
+
+shadowJar{
+    archiveFileName = "Votifier.jar"
+}
+artifacts {
+    archives shadowJar
+}
+jar.enabled = false
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+tasks {
+    runServer {
+        minecraftVersion("1.21.1")
+    }
+}
+
+processResources {
+    filteringCharset 'UTF-8'
+}
