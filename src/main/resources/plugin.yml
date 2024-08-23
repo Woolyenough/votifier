@@ -1,6 +1,7 @@
 name: Votifier
 main: com.vexsoftware.votifier.Votifier
-description: A plugin that gets notified when votes are made for the server on toplists.
+description: Fork of Votifier for the newer versions of Paper.
 authors: [Woolyenough, blakeman8192, Kramer]
+website: https://github.com/Woolyenough/votifier
 version: '4.0.0'
 api-version: 1.21

@@ -42,9 +42,6 @@ public class Votifier extends JavaPlugin {
 	/** The logger instance. */
 	private static final Logger LOG = Logger.getLogger("Votifier");
 
-	/** Log entry prefix */
-	private static final String logPrefix = "[Votifier] ";
-
 	/** The Votifier instance. */
 	private static Votifier instance;
 
@@ -60,16 +57,25 @@ public class Votifier extends JavaPlugin {
 	/** Debug mode flag */
 	private boolean debug;
 
-	/** Attach custom log filter to logger. */
-	static {
-		LOG.setFilter(new LogFilter(logPrefix));
-	}
-
 	@Override
 	public void onEnable() {
 		Votifier.instance = this;
 
-		saveResource("config.yml", false);
+		if(getResource("config.yml") == null) {
+			LOG.info("Creating a new config.yml file...");
+			saveResource("config.yml", false);
+			/*
+			 * Remind hosted server admins to be sure they have the right
+			 * port number.
+			 */
+			LOG.info("------------------------------------------------------------------------------");
+			LOG.info("Assigning Votifier to listen on port 8192. If you are hosting Craftbukkit on a");
+			LOG.info("shared server please check with your hosting provider to verify that this port");
+			LOG.info("is available for your use. Chances are that your hosting provider will assign");
+			LOG.info("a different port, which you need to specify in config.yml");
+			LOG.info("------------------------------------------------------------------------------");
+		}
+
 
 		File rsaDirectory = new File(getDataFolder() + "/rsa");
 		// Replace to remove a bug with Windows paths - SmilingDevil
