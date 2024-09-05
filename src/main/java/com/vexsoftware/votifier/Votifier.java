@@ -98,8 +98,8 @@ public class Votifier extends JavaPlugin {
 		 */
 		try {
 			if (!rsaDirectory.exists()) {
-				rsaDirectory.mkdir();
-				new File(listenerDirectory).mkdir();
+				rsaDirectory.mkdirs();
+				new File(listenerDirectory).mkdirs();
 				keyPair = RSAKeygen.generate(2048);
 				RSAIO.save(rsaDirectory, keyPair);
 			} else {

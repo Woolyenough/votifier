@@ -52,8 +52,7 @@ public class RSAIO {
 		PublicKey publicKey = keyPair.getPublic();
 
 		// Store the public key.
-		X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(
-				publicKey.getEncoded());
+		X509EncodedKeySpec publicSpec = new X509EncodedKeySpec(publicKey.getEncoded());
 		FileOutputStream out = new FileOutputStream(directory + "/public.key");
 		out.write(DatatypeConverter.printBase64Binary(publicSpec.getEncoded())
 				.getBytes());
