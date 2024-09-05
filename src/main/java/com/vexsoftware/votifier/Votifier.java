@@ -30,6 +30,7 @@ import com.vexsoftware.votifier.crypto.RSAKeygen;
 import com.vexsoftware.votifier.model.ListenerLoader;
 import com.vexsoftware.votifier.model.VoteListener;
 import com.vexsoftware.votifier.net.VoteReceiver;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The main Votifier plugin class.
@@ -61,9 +62,9 @@ public class Votifier extends JavaPlugin {
 	public void onEnable() {
 		Votifier.instance = this;
 
-		if(getResource("config.yml") == null) {
+		File configFile = new File(getDataFolder(), "config.yml");
+		if(!configFile.exists()) {
 			LOG.info("Creating a new config.yml file...");
-			saveResource("config.yml", false);
 			/*
 			 * Remind hosted server admins to be sure they have the right
 			 * port number.
@@ -75,7 +76,7 @@ public class Votifier extends JavaPlugin {
 			LOG.info("a different port, which you need to specify in config.yml");
 			LOG.info("------------------------------------------------------------------------------");
 		}
-
+		saveResource("config.yml", false);
 
 		File rsaDirectory = new File(getDataFolder() + "/rsa");
 		// Replace to remove a bug with Windows paths - SmilingDevil
